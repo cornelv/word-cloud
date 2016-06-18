@@ -1,7 +1,15 @@
 body {
   padding-top: 50px;
 }
-.starter-template {
-  padding: 40px 15px;
-  text-align: center;
+
+.scrape-form .btn-primary {
+	vertical-align: top;
+}
+
+.scrape-form .error-block {
+	display: none;
+}
+
+.scrape-form.has-error .error-block {
+	display: block;
 }

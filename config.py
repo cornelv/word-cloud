@@ -3,7 +3,7 @@ import tornado.web
 import torndb
 from tornado.options import define, options
 
-from handlers import HomeHandler
+from handlers import HomeHandler, ScrapeHandler
 
 
 define("port", default=8000, help="run on the given port", type=int)
@@ -18,6 +18,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", HomeHandler),
+            (r"/scrape/", ScrapeHandler),
         ]
         settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), "templates"),

@@ -1,7 +1,18 @@
 {% extends "_base.html" %}
 
 {% block content %}
-	
-	<h1>Here is the content</h1>
+
+	<h1>Scrape webpage</h1>
+
+	<form class="form-inline scrape-form js-scrape-form">
+		{% raw xsrf_form_html() %}
+	  <div class="form-group">
+	    <input type="text" class="form-control js-url" id="url" placeholder="URL">
+	    <span id="error" class="error-block help-block js-url-error">Please enter a valid URL.</span>
+	  </div>
+
+	  <button type="button" data-loading-text="Loading..." class="btn btn-primary js-scrape">Scrape</button>
+
+	</form>
 
 {% end %}
