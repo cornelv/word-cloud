@@ -13,3 +13,19 @@ body {
 .scrape-form.has-error .error-block {
 	display: block;
 }
+
+.word-cloud {
+	text-align: justify;
+
+}
+
+.word-cloud .word {
+	position: relative;
+	display: inline-block;
+	margin: 5px;
+	font-size: 1em;
+}
+
+.word-cloud .word.template {
+	display: none;
+}

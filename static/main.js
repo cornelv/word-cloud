@@ -6,7 +6,7 @@
 	    return r ? r[1] : undefined;
 	}
 
-	$(".js-scrape").on('click', function(event){
+	$(".js-scrape-form").on('submit', function(event){
 		event.preventDefault();
 		var url = $(".js-url").val();
 
@@ -16,18 +16,45 @@
 			$(".js-scrape-form").addClass('has-error');
 		}
 		else {
-			var $btn = $(this).button('loading');
+			var $btn = $(this).find('.js-scrape').button('loading');
 			$(".js-scrape-form").removeClass('has-error');
 
 			if (!url.match(/^[a-zA-Z]+:\/\//))
 				url = 'http://' + url;
 
+			// clear the old word cloud
+			$(".js-word-cloud .js-word").not('.template').remove();
+
 			$.ajax({
 				url: "/scrape/",
 				type: "post",
 				data: {url: url, "_xsrf": getCookie("_xsrf")},
-				success: function(result) {
-					console.log(result);
+				dataType: 'json',
+				success: function(data) {
+					
+					// insert shuffled words in DOM
+					var idx = data.result.length;
+					var $template = $(".js-word-cloud .js-word.template");
+					var base_font_size = parseFloat($template.css('font-size'));
+
+					while(idx--) {
+						// generate a random index smaller then x
+						rand_idx = Math.floor(Math.random()*(idx-1));
+						if(rand_idx < 0) {
+							rand_idx = 0;
+						}
+
+						// clone the template and add it to DOM
+						var clone = $template.clone();
+						clone.html( data.result[rand_idx][0] );
+						clone.removeClass('template');
+						clone.css('font-size', Math.round( base_font_size + parseFloat(data.result[rand_idx][1])/1.2));
+						clone.appendTo('.js-word-cloud');
+
+						// remove the item from array
+						data.result.splice(rand_idx, 1);
+					}
+
 					$btn.button('reset');
 				},
 				error: function(){
@@ -41,5 +68,7 @@
 		}
 
 	});
+
+
 
 })();

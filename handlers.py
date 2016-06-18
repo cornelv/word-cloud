@@ -4,6 +4,7 @@ from tornado import httpclient, gen
 from bs4 import BeautifulSoup
 import re
 from collections import Counter
+from random import shuffle
 
 class BaseHandler(tornado.web.RequestHandler):
     @property
@@ -37,6 +38,9 @@ class ScrapeHandler(BaseHandler):
 			words = self.get_words( soup.get_text().lower() )
 
 			c = Counter(words).most_common(100)
+
+			# save the top 100 words in DB
+
 
 		except Exception as e:
 			print('Exception: %s %s' % (str(e), url))
