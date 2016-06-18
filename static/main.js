@@ -18,14 +18,24 @@
 		else {
 			var $btn = $(this).button('loading');
 			$(".js-scrape-form").removeClass('has-error');
+
+			if (!url.match(/^[a-zA-Z]+:\/\//))
+				url = 'http://' + url;
+
 			$.ajax({
 				url: "/scrape/",
 				type: "post",
 				data: {url: url, "_xsrf": getCookie("_xsrf")},
 				success: function(result) {
 					console.log(result);
-					$btn.button('reset')
+					$btn.button('reset');
 				},
+				error: function(){
+
+					//TODO: add nice message here
+
+					console.log(result);
+				}
 			});
 
 		}
