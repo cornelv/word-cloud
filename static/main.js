@@ -66,10 +66,7 @@
 					$btn.button('reset');
 				},
 				error: function(){
-
 					//TODO: add nice message here
-
-					console.log(result);
 				}
 			});
 

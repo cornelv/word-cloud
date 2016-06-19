@@ -1,0 +1,29 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+	<h1>Admin</h1>
+
+	<div class="row">
+		<div class="col-xs-12 table-responsive">
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>Word</th>
+						<th>Occurences</th>
+					</tr>	
+				</thead>
+				<tbody>
+					{% for word in words %}
+						<tr>
+							<td>{{ word[0] }}</td>
+							<td>{{ word[1] }}</td>
+						</tr>
+					{% end %}	
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+{% end %}

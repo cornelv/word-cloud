@@ -18,6 +18,10 @@ define("mysql_database", default="wordcount")
 define("mysql_user", default="wordcount")
 define("mysql_password", default="12345678")
 
+define("cookie_secret", default="87t7868&T^&RHUH&*g8og76tf^&RF5e7%#(&*GBJHG65:}?")
+define("words_pk_salt", default="L})usq/7$X?Ef Cl-9[F+q/)8vkv,Fm^9=:xdb`*@9C>N[]:}es_w?._*|EC.~Wk")
+define("key_file_pass", default = b'*7K7zv4=8Yh#THm?6WU+')
+
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -30,7 +34,7 @@ class Application(tornado.web.Application):
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
             static_path=os.path.join(os.path.dirname(__file__), "static"),
             xsrf_cookies=True,
-            cookie_secret="87t7868&T^&RHUH&*g8og76tf^&RF5e7%#(&*GBJHG65:}?",
+            cookie_secret=options.cookie_secret,
             debug=True,
         )
         super(Application, self).__init__(handlers, **settings)
@@ -44,16 +48,16 @@ class Application(tornado.web.Application):
         # create database if required
         #
         try:
-            self.db.get('SELECT COUNT(*) from words;')
+            self.db.get('SELECT COUNT(*) from `words`;')
 
         except MySQLdb.ProgrammingError: 
 
             with open('database.sql', 'r') as schema:
-                a = self.db.execute( schema.read() )
-                self.db.reconect()
+                self.db.execute( schema.read() )
+                self.db.reconnect()
 
 
-        self.words_pk_salt = 'L})usq/7$X?Ef Cl-9[F+q/)8vkv,Fm^9=:xdb`*@9C>N[]:}es_w?._*|EC.~Wk'
+        self.words_pk_salt = options.words_pk_salt
 
         #
         # load the private key
@@ -70,7 +74,7 @@ class Application(tornado.web.Application):
             pem = private_key.private_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PrivateFormat.PKCS8,
-                encryption_algorithm=serialization.BestAvailableEncryption(b'*7K7zv4=8Yh#THm?6WU+')
+                encryption_algorithm=serialization.BestAvailableEncryption(options.key_file_pass)
             )
 
             # save the generated key
@@ -80,7 +84,7 @@ class Application(tornado.web.Application):
         with open("key.pem", "rb") as key_file:
             self.private_key = serialization.load_pem_private_key(
                 key_file.read(),
-                password=b'*7K7zv4=8Yh#THm?6WU+',
+                password=options.key_file_pass,
                 backend=default_backend()
             )
 
