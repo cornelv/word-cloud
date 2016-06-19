@@ -26,7 +26,7 @@ define("key_file_pass", default = b'*7K7zv4=8Yh#THm?6WU+')
 
 
 class Application(tornado.web.Application):
-    def __init__(self):
+    def __init__(self, request={}):
         handlers = [
             (r"/", HomeHandler),
             (r"/scrape/", ScrapeHandler),

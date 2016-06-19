@@ -1,8 +1,7 @@
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
-import tornado.web
-from tornado.options import define, options
+from tornado.options import options
 
 from config import Application
 
