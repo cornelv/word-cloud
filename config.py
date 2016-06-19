@@ -10,7 +10,9 @@ import MySQLdb
 from handlers import HomeHandler, ScrapeHandler, AdminHandler
 
 
-
+###
+###  Custom settings
+###
 define("port", default=8000, help="run on the given port", type=int)
 
 define("mysql_host", default="127.0.0.1:3306")
